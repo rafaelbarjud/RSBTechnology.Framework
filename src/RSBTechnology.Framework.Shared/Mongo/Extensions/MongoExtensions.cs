@@ -11,4 +11,5 @@ public static class MongoExtensions
         services.AddSingleton(new MongoDbContext(connectionString, databaseName));
         return services;
     }
+
 }
