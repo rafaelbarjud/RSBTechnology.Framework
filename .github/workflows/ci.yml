@@ -28,6 +28,4 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Run tests
-        run: |
-          cd test
-          dotnet test --configuration Release --no-build
+        run: dotnet test $(find . -name '*Tests.csproj') --configuration Release --no-build
