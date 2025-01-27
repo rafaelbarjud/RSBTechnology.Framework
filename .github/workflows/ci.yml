@@ -40,20 +40,25 @@ jobs:
       with:
           ref: develop   # Faz o checkout da branch develop
 
+    - name: Fetch all branches
+      run: git fetch --all
+
     - name: Set up Git config
       run: |
         git config --global user.name "${{ github.actor }}"
         git config --global user.email "${{ github.event.pusher.email }}"  
     
+    - name: Check differences between develop and main
+      run: |
+          git diff origin/main..origin/develop  # Verifica as diferenças entre develop e main
+
     - name: Create a new branch for the PR
       run: |
-          # Cria uma nova branch para o PR
-          git checkout -b pr-branch-${{ github.sha }}
-    
-    - name: Push the new branch
-      run: |
-            # Faz o push da nova branch para o repositório remoto
-            git push origin pr-branch-${{ github.sha }}
+            git checkout develop  # Faz o checkout da develop
+            git pull origin develop  # Atualiza a develop com as últimas mudanças
+            git checkout -b pr-branch-${{ github.sha }}  # Cria a nova branch
+            git push origin pr-branch-${{ github.sha }}  # Faz o push da branch
+
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
