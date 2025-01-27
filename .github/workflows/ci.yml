@@ -29,3 +29,22 @@ jobs:
 
       - name: Run tests
         run: dotnet test $(find . -name '*Tests.csproj') --configuration Release --no-build
+
+  create-pull-request:
+    runs-on: ubuntu-latest
+    needs: build  
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Create Pull Request
+      uses: peter-evans/create-pull-request@v5
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        branch: develop    # Branch de origem do PR
+        base: main         # Branch de destino do PR
+        title: "Merge develop into main"
+        body: |
+            Atualizando a branch main com as mudanças mais recentes da branch develop.
+        draft: false       # Defina como true para criar um PR em modo rascunho
