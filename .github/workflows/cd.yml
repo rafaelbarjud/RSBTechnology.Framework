@@ -38,15 +38,13 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.x'  
-
-      - name: Authenticate with GitHub Packages
-        run: |
-          echo "PACKAGE_REGISTRY_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
+          dotnet-version: '9.x'
 
       - name: Pack the project
         run: dotnet pack --configuration Release --output ./nupkgs
 
       - name: Publish package to GitHub Packages
         run: |
-          dotnet nuget push ./nupkgs/*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github"
+          dotnet nuget push ./nupkgs/*.nupkg \
+          --api-key ${{ secrets.GITHUB_TOKEN }} \
+          --source "github"
