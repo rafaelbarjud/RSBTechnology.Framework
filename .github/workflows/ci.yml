@@ -42,7 +42,17 @@ jobs:
       run: |
         git config --global user.name "${{ github.actor }}"
         git config --global user.email "${{ github.event.pusher.email }}"  
-        
+    
+    - name: Create a new branch for the PR
+      run: |
+          # Cria uma nova branch para o PR
+          git checkout -b pr-branch-${{ github.sha }}
+    
+    - name: Push the new branch
+      run: |
+            # Faz o push da nova branch para o repositório remoto
+            git push origin pr-branch-${{ github.sha }}
+
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
@@ -53,3 +63,8 @@ jobs:
         body: |
             Atualizando a branch main com as mudanças mais recentes da branch develop.
         draft: false       # Defina como true para criar um PR em modo rascunho
+    
+    - name: Delete the PR branch remotely
+      run: |
+          # Exclui a branch remota após o PR ser criado
+          git push origin --delete pr-branch-${{ github.sha }}
