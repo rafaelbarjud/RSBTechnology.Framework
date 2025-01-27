@@ -57,8 +57,8 @@ jobs:
       uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch: develop    # Branch de origem do PR
-        base: main         # Branch de destino do PR
+        branch: pr-branch-${{ github.sha }}    # Branch de origem do PR
+        base: main                              # Branch de destino do PR
         title: "Merge develop into main"
         body: |
             Atualizando a branch main com as mudanças mais recentes da branch develop.
