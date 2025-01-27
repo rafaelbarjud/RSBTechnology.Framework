@@ -39,6 +39,12 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '9.x'
+    
+      - name: Generate dynamic version
+        run: |
+            VERSION="1.0.${{ github.run_number }}"
+            echo "Generated version: $VERSION"
+            find . -name '*.csproj' -exec sed -i 's|<Version>.*</Version>|<Version>'$VERSION'</Version>|' {} +
 
       - name: Pack the project
         run: dotnet pack --configuration Release --output ./nupkgs
