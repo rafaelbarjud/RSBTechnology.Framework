@@ -22,14 +22,10 @@ jobs:
           dotnet-version: '9.x'  
 
       - name: Install dependencies
-        run: |
-          cd src
-          dotnet restore
+        run: dotnet restore
 
       - name: Build the project
-        run: |
-          cd src
-          dotnet build --configuration Release
+        run: dotnet build --configuration Release
 
       - name: Run tests
         run: |

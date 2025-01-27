@@ -16,17 +16,13 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0'  
+          dotnet-version: '9.x'  
 
       - name: Install dependencies
-        run: |
-          cd src
-          dotnet restore
+        run: dotnet restore
 
       - name: Build the project
-        run: |
-          cd src
-          dotnet build --configuration Release
+        run: dotnet build --configuration Release
 
       - name: Run tests
         run: |
@@ -44,16 +40,14 @@ jobs:
       - name: Set up .NET
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: '9.0'  
+          dotnet-version: '9.x'  
 
       - name: Authenticate with GitHub Packages
         run: |
           echo "PACKAGE_REGISTRY_TOKEN=${{ secrets.GITHUB_TOKEN }}" >> $GITHUB_ENV
 
       - name: Pack the project
-        run: |
-          cd src
-          dotnet pack --configuration Release --output ./nupkgs
+        run: dotnet pack --configuration Release --output ./nupkgs
 
       - name: Publish package to GitHub Packages
         run: |
