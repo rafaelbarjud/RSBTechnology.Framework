@@ -45,6 +45,7 @@ jobs:
             VERSION="1.0.${{ github.run_number }}"
             echo "Generated version: $VERSION"
             find . -name '*.csproj' -exec sed -i 's|<Version>.*</Version>|<Version>'$VERSION'</Version>|' {} +
+            cat $(find . -name '*.csproj')
 
       - name: Pack the project
         run: dotnet pack --configuration Release --output ./nupkgs
@@ -54,3 +55,4 @@ jobs:
           dotnet nuget push ./nupkgs/*.nupkg \
           --api-key ${{ secrets.GITHUB_TOKEN }} \
           --source "https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json"
+          --skip-duplicate
