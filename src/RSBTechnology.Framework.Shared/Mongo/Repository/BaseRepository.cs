@@ -7,6 +7,7 @@ namespace RSBTechnology.Framework.Shared.Mongo.Repository;
 
 public class BaseRepository<T>(MongoDbContext context, string collectionName) : IRepository<T> where T : class
 {
+
     private readonly IMongoCollection<T> _collection = context.GetCollection<T>(collectionName);
 
     public async Task<IEnumerable<T>> GetAllAsync() =>

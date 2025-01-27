@@ -13,6 +13,6 @@ public class MongoDbContext
         _database = client.GetDatabase(databaseName);
     }
 
-    public IMongoCollection<T> GetCollection<T>(string collectionName) =>
+    public virtual IMongoCollection<T> GetCollection<T>(string collectionName) =>
         _database.GetCollection<T>(collectionName);
 }
