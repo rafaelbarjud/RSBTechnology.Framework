@@ -61,12 +61,9 @@ jobs:
         token: ${{ secrets.GITHUB_TOKEN }}
         branch: pr-branch-${{ github.sha }}    # Branch de origem do PR
         base: main                              # Branch de destino do PR
-        title: "Merge develop into main"
+        title: "Merge into main"
         body: |
             Atualizando a branch main com as mudanças mais recentes da branch develop.
         draft: false       # Defina como true para criar um PR em modo rascunho
+        delete-branch: true
     
-    - name: Delete the PR branch remotely
-      run: |
-          # Exclui a branch remota após o PR ser criado
-          git push origin --delete pr-branch-${{ github.sha }}
