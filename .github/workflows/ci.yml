@@ -50,21 +50,18 @@ jobs:
     
     - name: Check differences between develop and main
       run: |
-          git diff origin/main..origin/develop  # Verifica as diferenças entre develop e main
-
-    - name: Create a new branch for the PR
-      run: |
-            git checkout develop  # Faz o checkout da develop
-            git pull origin develop  # Atualiza a develop com as últimas mudanças
-            git checkout -b pr-branch-${{ github.sha }}  # Cria a nova branch
-            git push origin pr-branch-${{ github.sha }}  # Faz o push da branch
+          git diff origin/main..origin/develop --exit-code
+          if [ $? -eq 0 ]; then
+            echo "No differences between develop and main. Skipping PR creation."
+            exit 0
+          fi
 
 
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-        branch: pr-branch-${{ github.sha }}    # Branch de origem do PR
+        branch: develop    # Branch de origem do PR
         base: main                              # Branch de destino do PR
         title: "Merge into main"
         body: |
