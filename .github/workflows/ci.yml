@@ -48,15 +48,6 @@ jobs:
         git config --global user.name "${{ github.actor }}"
         git config --global user.email "${{ github.event.pusher.email }}"  
     
-    - name: Check differences between develop and main
-      run: |
-          git diff origin/main..origin/develop --exit-code
-          if [ $? -eq 0 ]; then
-            echo "No differences between develop and main. Skipping PR creation."
-            exit 0
-          fi
-
-
     - name: Create Pull Request
       uses: peter-evans/create-pull-request@v5
       with:
