@@ -70,5 +70,5 @@ jobs:
         body: |
             Atualizando a branch main com as mudanças mais recentes da branch develop.
         draft: false       # Defina como true para criar um PR em modo rascunho
-        delete-branch: true
+        
     
