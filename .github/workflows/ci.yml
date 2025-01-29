@@ -47,7 +47,7 @@ jobs:
           github.rest.pulls.create({
             owner,
             repo,
-            title: "Merge develop into main",
+            title: "Merge develop into main - V1.0.${{ github.run_number }}",
             head: "develop",
             base: "main",
             body: "Atualizando a branch main com as mudanças mais recentes da branch develop."
