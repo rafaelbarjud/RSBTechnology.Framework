@@ -37,26 +37,20 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
-      with:
-          ref: develop   # Faz o checkout da branch develop
 
-    - name: Fetch all branches
-      run: git fetch --all
-
-    - name: Set up Git config
-      run: |
-        git config --global user.name "${{ github.actor }}"
-        git config --global user.email "${{ github.event.pusher.email }}"  
-    
     - name: Create Pull Request
-      uses: peter-evans/create-pull-request@v5
+      uses: actions/github-script@v7
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        branch: develop    # Branch de origem do PR
-        base: main                              # Branch de destino do PR
-        title: "Merge into main"
-        body: |
-            Atualizando a branch main com as mudanças mais recentes da branch develop.
-        draft: false       # Defina como true para criar um PR em modo rascunho
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const { owner, repo } = context.repo;
+          github.rest.pulls.create({
+            owner,
+            repo,
+            title: "Merge develop into main",
+            head: "develop",
+            base: "main",
+            body: "Atualizando a branch main com as mudanças mais recentes da branch develop."
+          });
         
     
