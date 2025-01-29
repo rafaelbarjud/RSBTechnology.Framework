@@ -16,3 +16,4 @@ public class MongoDbContext
     public virtual IMongoCollection<T> GetCollection<T>(string collectionName) =>
         _database.GetCollection<T>(collectionName);
 }
+
