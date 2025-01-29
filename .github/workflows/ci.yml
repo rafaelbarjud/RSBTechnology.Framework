@@ -29,3 +29,28 @@ jobs:
 
       - name: Run tests
         run: dotnet test $(find . -name '*Tests.csproj') --configuration Release --no-build
+
+  create-pull-request:
+    runs-on: ubuntu-latest
+    needs: build  
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Create Pull Request
+      uses: actions/github-script@v7
+      with:
+        github-token: ${{ secrets.PULL_TOKEN }}
+        script: |
+          const { owner, repo } = context.repo;
+          github.rest.pulls.create({
+            owner,
+            repo,
+            title: "Merge develop into main",
+            head: "develop",
+            base: "main",
+            body: "Atualizando a branch main com as mudanças mais recentes da branch develop."
+          });
+        
+    
