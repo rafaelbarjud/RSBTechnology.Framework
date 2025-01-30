@@ -28,13 +28,8 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Run tests
-        run: dotnet test $(find . -name '*Tests.csproj') --configuration Release --no-build --collect:"XPlat Code Coverage" --results-directory ./TestResults 
-
-      - name: Convert coverage report
-        run: |
-          dotnet tool install --global dotnet-reportgenerator-globaltool
-          reportgenerator -reports:./TestResults/*.coveragefile -targetdir:./TestResults/CoverageConverted -reporttypes:Cobertura
-
+        run: dotnet test $(find . -name '*Tests.csproj') --configuration Release --no-build --collect:"XPlat Code Coverage" 
+        
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
