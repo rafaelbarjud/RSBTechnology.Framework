@@ -35,24 +35,15 @@ jobs:
             dotnet tool install --global dotnet-reportgenerator-globaltool
             reportgenerator -reports:./TestResults/**/coverage.cobertura.xml -targetdir:./TestResults/CoverageConverted -reporttypes:Cobertura
 
-  
-  sonarqube:
-    name: SonarQube
-    runs-on: ubuntu-latest
-    needs: [build]  
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0  
       - name: SonarQube Scan
         uses: SonarSource/sonarqube-scan-action@v4
         env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
   create-pull-request:
     runs-on: ubuntu-latest
-    needs: [build, sonarqube]  
+    needs: [build]  
     
     steps:
     - name: Checkout code
