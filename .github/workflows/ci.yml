@@ -53,32 +53,31 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: |
-          # Executando o SonarScanner para início da análise
           ./.sonar/scanner/dotnet-sonarscanner begin \
             /k:"rafaelbarjud_RSBTechnology.Framework" \
             /o:"rafaelbarjud" \
             /d:sonar.host.url="https://sonarcloud.io" \
-            /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
+            /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
+            /d:sonar.coverageReportPaths="$(find TestResults -name "coverage.cobertura.xml" | head -n 1)"
 
-          # Rodando os testes e gerando os relatórios
           dotnet test \
             --collect:"XPlat Code Coverage" \
             --results-directory TestResults \
             --logger trx
 
-          # Usando o comando 'find' para procurar o arquivo de cobertura
-          coverage_report=$(find TestResults -type f -name "coverage.cobertura.xml" | head -n 1)
+          echo "🔍 Verificando arquivos gerados..."
+          ls -R TestResults
 
-          # Verificando se o relatório foi encontrado
-          if [ -z "$coverage_report" ]; then
+          report_path=$(find TestResults -name "coverage.cobertura.xml" | head -n 1)
+
+          if [ -f "$report_path" ]; then
+            echo "✅ Coverage report found: $report_path"
+          else
             echo "❌ No coverage report found!"
             exit 1
-          else
-            echo "✅ Coverage report found: $coverage_report"
           fi
 
-          # Passando o caminho do arquivo encontrado para o SonarCloud
-          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}" /d:sonar.coverageReportPaths="$coverage_report"
+          ./.sonar/scanner/dotnet-sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
 
   create-pull-request:
     runs-on: ubuntu-latest
