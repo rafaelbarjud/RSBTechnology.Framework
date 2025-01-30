@@ -58,7 +58,7 @@ jobs:
             /o:"rafaelbarjud" \
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
-            /d:sonar.coverageReportPaths="TestResults/**/coverage.cobertura.xml"
+            /d:sonar.coverageReportPaths="TestResults/*/coverage.cobertura.xml"
 
           dotnet test \
             --collect:"XPlat Code Coverage" \
