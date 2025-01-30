@@ -396,3 +396,13 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+# Ignorar pastas de resultados de testes
+/TestResults/
+
+# Ignorar arquivos de cobertura gerados por dotnet
+**/coverage.cobertura.xml
+**/coverage.opencover.xml
+
+# Ignorar ferramentas de cobertura específicas
+.dn/.coverage
