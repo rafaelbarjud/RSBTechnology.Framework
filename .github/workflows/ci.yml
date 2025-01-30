@@ -59,10 +59,15 @@ jobs:
             /d:sonar.host.url="https://sonarcloud.io" \
             /d:sonar.login="${{ secrets.SONAR_TOKEN }}" \
             /d:sonar.cs.opencover.reportsPaths="TestResults/**/coverage.opencover.xml"
+            /d:sonar.coverageReportPaths="TestResults/**/coverage.cobertura.xml"
 
           dotnet test \
             --collect:"XPlat Code Coverage" \
-            --results-directory TestResults
+            --results-directory TestResults \
+            --logger trx
+
+          echo "Verificando arquivos gerados..."
+          ls -R TestResults
 
           report_path=$(find TestResults -name "coverage.cobertura.xml" | head -n 1)
           
