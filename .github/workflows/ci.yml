@@ -63,12 +63,13 @@ jobs:
           dotnet test \
             --collect:"XPlat Code Coverage" \
             --results-directory TestResults \
-            --logger trx
+            --logger trx \
+            /p:CoverletOutputFormat=opencover
 
           echo "Verificando arquivos gerados..."
           ls -R TestResults
 
-          report_path=$(find TestResults -name "coverage.cobertura.xml" | head -n 1)
+          report_path=$(find TestResults -name "coverage.opencover.xml" | head -n 1)
           
           if [ -f "$report_path" ]; then
             echo "Coverage report found: $report_path"
