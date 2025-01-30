@@ -64,17 +64,18 @@ jobs:
             --collect:"XPlat Code Coverage" \
             --results-directory TestResults \
             --logger trx \
-            /p:CoverletOutputFormat=opencover
+            /p:CoverletOutputFormat=opencover \
+            /p:CoverletOutput=TestResults/coverage.opencover.xml
 
-          echo "Verificando arquivos gerados..."
+          echo "🔍 Verificando arquivos gerados..."
           ls -R TestResults
 
           report_path=$(find TestResults -name "coverage.opencover.xml" | head -n 1)
-          
+
           if [ -f "$report_path" ]; then
-            echo "Coverage report found: $report_path"
+            echo "✅ Coverage report found: $report_path"
           else
-            echo "No coverage report found!"
+            echo "❌ No coverage report found!"
             exit 1
           fi
 
