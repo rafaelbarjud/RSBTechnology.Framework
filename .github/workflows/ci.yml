@@ -30,9 +30,9 @@ jobs:
         run: dotnet build --configuration Release
 
       - name: Test with the dotnet CLI
-        run: dotnet test --settings coverlet.runsettings --logger:trx
+        run: dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover -l trx
       
-      - name: SonarScanner for
+      - name: SonarScanner
         uses: highbyte/sonarscan-dotnet@2.0
         with:
           sonarProjectKey: rafaelbarjud_RSBTechnology.Framework
