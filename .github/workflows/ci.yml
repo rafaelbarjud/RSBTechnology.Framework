@@ -26,11 +26,6 @@ jobs:
       - name: Install dependencies
         run: dotnet restore
 
-      - name: Sonarqube Begin
-        run: | 
-          dotnet tool install --global dotnet-sonarscanner
-          dotnet sonarscanner begin /o:rafaelbarjud /k:rafaelbarjud_RSBTechnology.Framework /d:sonar.login=${{ secrets.SONAR_TOKEN }} /s:$GITHUB_WORKSPACE/SonarQube.Analysis.xml
-
       - name: Build the project
         run: dotnet build --configuration Release
 
