@@ -37,10 +37,18 @@ jobs:
       - name: Test with the dotnet CLI
         run: dotnet test --settings coverlet.runsettings --logger:trx
       
-      - name: Sonarqube end
-        run: dotnet sonarscanner end /d:sonar.login="${{ secrets.SONAR_TOKEN }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: SonarScanner for
+        uses: highbyte/sonarscan-dotnet@2.0
+        with:
+          sonarProjectKey: rafaelbarjud_RSBTechnology.Framework
+          sonarProjectName:  RSBTechnology.Framework
+          sonarOrganization: rafaelbarjud
+          dotnetTestArguments: --logger trx --collect:"XPlat Code Coverage" -- DataCollectionRunSettings.DataCollectors.DataCollector.Configuration.Format=opencover
+          sonarBeginArguments: /d:sonar.cs.opencover.reportsPaths="**/TestResults/**/coverage.opencover.xml" -d:sonar.cs.vstest.reportsPaths="**/TestResults/*.trx"
+          
+    env:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   create-pull-request:
     runs-on: ubuntu-latest
